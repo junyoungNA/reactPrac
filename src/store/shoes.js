@@ -14,12 +14,11 @@ const shoes = createSlice({
       state.push(action.payload);
     },
     updateShoes(state, action) {
-      state.push(...action.payload);
+      const newPayload = action.payload.map((ele) => ({ ...ele, count: 0 }));
+      state.push(...newPayload);
     },
   },
 });
 export const { increaseCount, updateBasket, updateShoes } = shoes.actions;
 
 export default shoes;
-// git commit -m "first commit"
-// git branch -M main

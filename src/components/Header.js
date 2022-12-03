@@ -6,32 +6,26 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const shoes = useSelector((state) => state.shoes);
   const navigate = useNavigate();
+
+  const onNavigate = (e) => {
+    let inputName = e.target.name;
+    inputName = inputName ? inputName : "/";
+    navigate(`${inputName}`, { state: { shoes, num: 0 } });
+  };
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Navbar
-        </Navbar.Brand>
+        <Navbar.Brand onClick={onNavigate}>Navbar</Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link
-            onClick={() => {
-              navigate("/");
-            }}
-          >
+          <Nav.Link name="/" onClick={onNavigate}>
             홈
           </Nav.Link>
-          <Nav.Link
-            onClick={() => {
-              navigate("/detail", { state: { shoes, num: 0 } });
-            }}
-          >
+          <Nav.Link name="/detail" onClick={onNavigate}>
             상세페이지
           </Nav.Link>
-          <Nav.Link>Pricing</Nav.Link>
+          <Nav.Link name="/cart" onClick={onNavigate}>
+            장바구니
+          </Nav.Link>
         </Nav>
       </Container>
     </Navbar>

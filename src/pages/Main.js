@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
+import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -16,6 +17,23 @@ let Btn = styled.button`
   border: none;
   background: white;
 `;
+const WatchedShoes = ({ shoes, num }) => {
+  const navigate = useNavigate();
+  return (
+    <div
+      key={num}
+      onClick={() => {
+        console.log(shoes, num);
+        navigate("/detail", { state: { shoes, num } });
+      }}
+    >
+      <div className="watch_inner">
+        <li>상품번호:{num}</li>
+        <li>상품제목:{shoes[num].title}</li>
+      </div>
+    </div>
+  );
+};
 
 const ShoesContent = ({ num, shoes }) => {
   const navigate = useNavigate();
@@ -38,11 +56,19 @@ const ShoesContent = ({ num, shoes }) => {
 const Main = () => {
   const watched = useSelector((state) => state.watched);
   const allShoes = useSelector((state) => state.shoes);
-  // const [shoes, setShoes] = useState(allShoes);
   const [clickNum, setClickNum] = useState(0);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  let result = useQuery("shoes", () => {
+    return axios
+      .get("https://codingapple1.github.io/shop/data2.json")
+      .then((response) => {
+        console.log("요청됨");
+        console.log(response.data);
+        return response.data;
+      });
+  });
 
   useEffect(() => {
     //메인 페이지 첫 렌더링시에 local에 watched :[] 생성
@@ -85,23 +111,10 @@ const Main = () => {
     <>
       <div className="main-bg">
         <ul className="watch">
-          <h3>내가 본 상품</h3>
+          <h3>내가 본 상품{result.isLoading ? "로딩중" : result.data.title}</h3>
           {watched.length !== 0 &&
             watched.map((num) => {
-              return (
-                <div
-                  key={num}
-                  onClick={() => {
-                    // console.log(shoes, num);
-                    navigate("/detail", { state: { allShoes, num } });
-                  }}
-                >
-                  <div className="watch_inner">
-                    <li>상품번호:{num}</li>
-                    <li>상품제목:{allShoes[num].title}</li>
-                  </div>
-                </div>
-              );
+              return <WatchedShoes shoes={allShoes} num={num} key={num} />;
             })}
         </ul>
       </div>

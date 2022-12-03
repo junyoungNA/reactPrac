@@ -77,9 +77,10 @@ const Detail = () => {
           />
         </div>
         <div className="col-md-6">
+          {console.log(typeof num)}
           <h4 className="pt-5">상품:{shoes[num].title}</h4>
-          <p>상품 설명: {shoes[state.num].content}</p>
-          <p>가격: {shoes[state.num].price}</p>
+          <p>상품 설명: {shoes[num].content}</p>
+          <p>가격: {shoes[num].price}</p>
           <button
             className="btn btn-danger"
             onClick={() => {
