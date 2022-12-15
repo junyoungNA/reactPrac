@@ -61,7 +61,6 @@ const Main = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  console.log("출력값들", shoes, isLoading, error);
   // data ajax요청 결과값들, isLoading ajax요청중일때(true,)아니면 false
   //isFetched 캐싱데이터에서 사용되는 불린값
   //isSuccess  데이터가 요청되서 받아왔을때 완료됐을 때
