@@ -10,6 +10,7 @@ import styled from "styled-components";
 
 import { updateShoes } from "../store/shoes";
 import { initialWatched } from "../store/watched";
+import { __getShoes } from "../thunk/thunk";
 
 let Btn = styled.button`
   font-size: 30px;
@@ -55,25 +56,20 @@ const ShoesContent = ({ num, shoes }) => {
 
 const Main = () => {
   const watched = useSelector((state) => state.watched);
-  const allShoes = useSelector((state) => state.shoes);
+  const { isLoading, error, shoes } = useSelector((state) => state.shoes);
   const [clickNum, setClickNum] = useState(0);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  let result = useQuery("shoes", () => {
-    return axios
-      .get("https://codingapple1.github.io/shop/data2.json")
-      .then((response) => {
-        console.log("요청됨");
-        console.log(response.data);
-        return response.data;
-      });
-  });
-
+  console.log("출력값들", shoes, isLoading, error);
+  // data ajax요청 결과값들, isLoading ajax요청중일때(true,)아니면 false
+  //isFetched 캐싱데이터에서 사용되는 불린값
+  //isSuccess  데이터가 요청되서 받아왔을때 완료됐을 때
+  //
   useEffect(() => {
     //메인 페이지 첫 렌더링시에 local에 watched :[] 생성
-    dispatch(initialWatched());
-  }, []);
+    dispatch(__getShoes());
+  }, [dispatch]);
 
   const moreShoes = () => {
     setLoading(true);
@@ -111,19 +107,19 @@ const Main = () => {
     <>
       <div className="main-bg">
         <ul className="watch">
-          <h3>내가 본 상품{result.isLoading ? "로딩중" : result.data.title}</h3>
+          {/* <h3>내가 본 상품{result.isLoading ? "로딩중" : result.data.title}</h3> */}
           {watched.length !== 0 &&
             watched.map((num) => {
-              return <WatchedShoes shoes={allShoes} num={num} key={num} />;
+              return <WatchedShoes shoes={shoes} num={num} key={num} />;
             })}
         </ul>
       </div>
       <Container className="shoes_container">
         <Row>
-          {allShoes.map((e, i) => {
+          {shoes.map((e, i) => {
             return (
               <Col className="shoes_inner" key={i}>
-                <ShoesContent num={i} shoes={allShoes} />
+                <ShoesContent num={i} shoes={shoes} />
               </Col>
             );
           })}

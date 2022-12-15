@@ -26,6 +26,9 @@ const Header = () => {
           <Nav.Link name="/cart" onClick={onNavigate}>
             장바구니
           </Nav.Link>
+          <Nav.Link name="/create" onClick={onNavigate}>
+            상품 넣기
+          </Nav.Link>
         </Nav>
       </Container>
     </Navbar>

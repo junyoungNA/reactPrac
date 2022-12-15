@@ -10,6 +10,8 @@
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "axios": "^1.2.0",
     "bootstrap": "^5.2.3",
+    "dotenv": "^16.0.3",
+    "json-server": "^0.17.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",

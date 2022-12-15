@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import data from "../data";
+import { __getShoes } from "../thunk/thunk";
+
+const initialState = {
+  shoes: [],
+  isLoading: false,
+  error: null,
+};
 
 const shoes = createSlice({
   name: "shoes",
-  initialState: [...data],
+  initialState: initialState,
   reducers: {
     increaseCount(state, action) {
       const index = state.findIndex((state) => state.id === action.payload);
@@ -18,7 +24,22 @@ const shoes = createSlice({
       state.push(...newPayload);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(__getShoes.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(__getShoes.fulfilled, (state, action) => {
+      state.shoes = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(__getShoes.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+  },
 });
 export const { increaseCount, updateBasket, updateShoes } = shoes.actions;
 
-export default shoes;
+const shoesReducer = shoes.reducer;
+
+export default shoesReducer;

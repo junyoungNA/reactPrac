@@ -8,7 +8,7 @@ import watched from "./store/watched";
 export default configureStore({
   reducer: {
     user: user.reducer,
-    shoes: shoes.reducer,
+    shoes: shoes,
     watched: watched.reducer,
   },
 });
